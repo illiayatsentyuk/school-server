@@ -12,6 +12,8 @@ const openai = new OpenAI({
 
 const innerMessage = 'Lina';
 
+mas=["A","B","C"]
+
 async function main({age, pills, sex, illnesses, message}) {
   const query = `user of age ${age} sex - ${sex} with ${illnesses}, take such pills: ${pills}, give answer for next question: ${message}`;
   console.log(query);
@@ -55,6 +57,35 @@ app.post("/message", async (req, res, next) => {
     next(e);
   }
 });
+
+app.get('/user',(req,res)=>{
+  res.send('Illia Yatsentyuk!')
+})
+
+app.get('/test',(req,res)=>{
+  res.send('Illia Yatsentyuk!')
+})
+
+app.get('/test/1',(req,res)=>{
+  res.send(mas[0])
+})
+
+app.get('/test/2',(req,res)=>{
+  res.send(mas[1])
+})
+
+app.get('/test/3',(req,res)=>{
+  res.send(mas[2])
+})
+
+app.get('/test/*',(req,res)=>{
+  res.send('Page not found!')
+})
+
+app.get('*',(req,res)=>{
+  res.send('Page not found!')
+})
+
 
 app.use(logErrors);
 app.use(clientErrorHandler);
