@@ -1,25 +1,27 @@
-require("dotenv").config();
-const express = require("express");
-const {
+import { } from 'dotenv/config';
+import express from "express";
+import {
   logErrors,
   clientErrorHandler
-} = require("./errorHandlers");
+} from "./errorHandlers.js";
+import OpenAI from "openai";
+import fs from "fs";
 
-const OpenAI = require("openai");
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY
 });
 
 const innerMessage = 'Lina';
 
-mas=["A","B","C"]
+const mas = ["A", "B", "C"]
 
-async function main({age, pills, sex, illnesses, message}) {
+async function main({ age, pills, sex, illnesses, message }) {
   const query = `user of age ${age} sex - ${sex} with ${illnesses}, take such pills: ${pills}, give answer for next question: ${message}`;
   console.log(query);
   const completion = await openai.chat.completions.create({
     messages: [
-      {role: "system", content: query
+      {
+        role: "system", content: query
       }
     ],
     model: "gpt-3.5-turbo",
@@ -51,38 +53,49 @@ app.post("/message", async (req, res, next) => {
     const illnesses = req.body.illnesses;
     const message = req.body.message;
 
-    res.json({answer: await main({age, pills, sex, illnesses, message})});
+    res.json({ answer: await main({ age, pills, sex, illnesses, message }) });
     // res.send(`Your message: ${req.body.message}`);
   } catch (e) {
     next(e);
   }
 });
 
-app.get('/user',(req,res)=>{
+app.get('/user', (req, res) => {
   res.send('Illia Yatsentyuk!')
 })
 
-app.get('/test',(req,res)=>{
+app.get('/test', (req, res) => {
   res.send('Illia Yatsentyuk!')
+  if (!req.query.search) {
+    return res.send('!@#')
+  } else {
+    fs.appendFile('./txtFiles/info.txt', req.query.search + "\n", err => {
+      if (err) {
+        console.error(err);
+      } else {
+        // file written successfully
+      }
+    })
+  }
 })
 
-app.get('/test/1',(req,res)=>{
+app.get('/test/1', (req, res) => {
   res.send(mas[0])
 })
 
-app.get('/test/2',(req,res)=>{
+app.get('/test/2', (req, res) => {
   res.send(mas[1])
 })
 
-app.get('/test/3',(req,res)=>{
+app.get('/test/3', (req, res) => {
   res.send(mas[2])
 })
 
-app.get('/test/*',(req,res)=>{
+app.get('/test/*', (req, res) => {
   res.send('Page not found!')
 })
 
-app.get('*',(req,res)=>{
+app.get('*', (req, res) => {
   res.send('Page not found!')
 })
 

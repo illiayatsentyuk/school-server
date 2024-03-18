@@ -10,4 +10,4 @@ const clientErrorHandler = (err, req, res, next) => {
   });
 };
 
-module.exports = { logErrors, clientErrorHandler };
+export { logErrors, clientErrorHandler };
