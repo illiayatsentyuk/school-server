@@ -59,7 +59,38 @@ app.post("/message", async (req, res, next) => {
     next(e);
   }
 });
-
+app.get("/cat", (req, res) => {
+  try {
+    let data = JSON.parse(fs.readFileSync("./s.json"))
+    console.log(data)
+    data.cat += 1
+    res.send(data)
+    fs.writeFile('./s.json', JSON.stringify(data), (error) => {
+      if (error) {
+        console.log('An error has occurred ', error);
+        return;
+      }
+    })
+  } catch (e) {
+    console.log(e)
+  }
+})
+app.get("/dog", (req, res) => {
+  try {
+    let data = JSON.parse(fs.readFileSync("./s.json"))
+    console.log(data)
+    data.dog += 1
+    res.send(data)
+    fs.writeFile('./s.json', JSON.stringify(data), (error) => {
+      if (error) {
+        console.log('An error has occurred ', error);
+        return;
+      }
+    })
+  } catch (e) {
+    console.log(e)
+  }
+})
 app.get('/user', (req, res) => {
   res.send('Illia Yatsentyuk!')
 })
