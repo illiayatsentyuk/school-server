@@ -11,6 +11,22 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY
 });
 
+const animal = (param) => {
+  let data = JSON.parse(fs.readFileSync("./s.json"))
+  if (param === "cat") {
+    data.cat += 1;
+  } else if (param === "dog") {
+    data.dog += 1;
+  }
+  fs.writeFile('./s.json', JSON.stringify(data), (error) => {
+    if (error) {
+      console.log('An error has occurred ', error);
+      return;
+    }
+  })
+  return data
+}
+
 const innerMessage = 'Lina';
 
 const mas = ["A", "B", "C"]
@@ -61,32 +77,14 @@ app.post("/message", async (req, res, next) => {
 });
 app.get("/cat", (req, res) => {
   try {
-    let data = JSON.parse(fs.readFileSync("./s.json"))
-    console.log(data)
-    data.cat += 1
-    res.send(data)
-    fs.writeFile('./s.json', JSON.stringify(data), (error) => {
-      if (error) {
-        console.log('An error has occurred ', error);
-        return;
-      }
-    })
+    res.send(animal("cat"))
   } catch (e) {
     console.log(e)
   }
 })
 app.get("/dog", (req, res) => {
   try {
-    let data = JSON.parse(fs.readFileSync("./s.json"))
-    console.log(data)
-    data.dog += 1
-    res.send(data)
-    fs.writeFile('./s.json', JSON.stringify(data), (error) => {
-      if (error) {
-        console.log('An error has occurred ', error);
-        return;
-      }
-    })
+    res.send(animal("dog"))
   } catch (e) {
     console.log(e)
   }
